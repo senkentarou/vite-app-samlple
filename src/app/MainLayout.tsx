@@ -1,6 +1,12 @@
 import { Route, Routes } from "react-router-dom";
 import { MdHome, MdRouter } from "react-icons/md";
-import { Footer, GlobalNavi, Header, LinkContent } from "@freee_jp/vibes";
+import {
+  Footer,
+  GlobalNavi,
+  Header,
+  LinkContent,
+  StatusIcon,
+} from "@freee_jp/vibes";
 import styled from "styled-components";
 
 import { Home } from "@screens/Home";
@@ -38,7 +44,11 @@ const ScreenRoutes = () => {
 export const MainLayout = () => {
   return (
     <>
-      <Header logo={<p>senkentarou</p>} sectionNode={null} />
+      <Header
+        logo={<StatusIcon type="success">senkentarou's page</StatusIcon>}
+        logoUrl="/"
+        sectionDataList={[]}
+      />
       <GlobalNavi hideHelpForm links={links} />
       <StyledMain>
         <ScreenRoutes />
