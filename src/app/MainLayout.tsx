@@ -1,7 +1,14 @@
 import { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import { MdHome, MdRouter } from "react-icons/md";
-import { Footer, GlobalNavi, Header, StatusIcon } from "@freee_jp/vibes";
+import { FaGithub } from "react-icons/fa";
+import {
+  Footer,
+  GlobalNavi,
+  Header,
+  IconOnlyButton,
+  StatusIcon,
+} from "@freee_jp/vibes";
 import styled from "styled-components";
 
 import { Home } from "@screens/Home";
@@ -53,7 +60,15 @@ export const MainLayout = () => {
       <Header
         logo={<StatusIcon type="success">senkentarou's page</StatusIcon>}
         logoUrl="/"
-        sectionDataList={[]}
+        sectionNode={
+          <IconOnlyButton
+            IconComponent={FaGithub}
+            label="github"
+            appearance="tertiary"
+            href="https://github.com/senkentarou"
+            target="_blank"
+          />
+        }
       />
       <GlobalNavi hideHelpForm links={links} />
       <StyledMain>
