@@ -1,17 +1,13 @@
+import { useMemo } from "react";
 import { Route, Routes } from "react-router-dom";
 import { MdHome, MdRouter } from "react-icons/md";
-import {
-  Footer,
-  GlobalNavi,
-  Header,
-  LinkContent,
-  StatusIcon,
-} from "@freee_jp/vibes";
+import { Footer, GlobalNavi, Header, StatusIcon } from "@freee_jp/vibes";
 import styled from "styled-components";
 
 import { Home } from "@screens/Home";
 import { About } from "@screens/About";
 import { NotFound } from "@screens/NotFound";
+import { useLocationContext } from "@common/useLocationContext";
 
 // With respect to https://vibes.freee.co.jp/?path=/docs/lv1-bases-container--docs
 const StyledMain = styled.main`
@@ -21,15 +17,6 @@ const StyledMain = styled.main`
   margin: 0 auto;
   height: calc(100vh - 3rem);
 `;
-
-const links: LinkContent[] = [
-  {
-    title: "Home",
-    url: "/",
-    IconComponent: MdHome,
-  },
-  { title: "About", url: "/about", IconComponent: MdRouter },
-];
 
 const ScreenRoutes = () => {
   return (
@@ -42,6 +29,25 @@ const ScreenRoutes = () => {
 };
 
 export const MainLayout = () => {
+  const { state } = useLocationContext();
+
+  const links = useMemo(() => {
+    return [
+      {
+        title: "Home",
+        url: "/",
+        IconComponent: MdHome,
+        current: state.current?.path === "/",
+      },
+      {
+        title: "About",
+        url: "/about",
+        IconComponent: MdRouter,
+        current: state.current?.path === "/about",
+      },
+    ];
+  }, [state]);
+
   return (
     <>
       <Header

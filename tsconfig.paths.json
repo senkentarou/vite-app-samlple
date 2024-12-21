@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/features/components/*"],
-      "@screens/*": ["src/features/screens/*"]
+      "@screens/*": ["src/features/screens/*"],
+      "@common/*": ["src/packages/common/*"]
     }
   }
 }
