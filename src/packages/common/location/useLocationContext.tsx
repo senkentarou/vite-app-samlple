@@ -24,6 +24,7 @@ type State = {
 type Computed = {
   treeNodes: Location[]; // ツリー上の全てのノードを走査して絶対パスに変換した1次元リスト
   currentPaths: Location[]; // 現在のページを構成するパスのリスト
+  breadcrumbsLinks: { title: string; url?: string }[];
 };
 
 type Action = {
@@ -45,17 +46,30 @@ const reducer: Reducer<State, Mutation> = (state, mutation) => {
 };
 
 const useComputed = (state: State) => {
+  const currentPaths = useMemo(() => {
+    if (!state.current) {
+      return [];
+    }
+    return extractLocationPathsFromTree(state.tree, state.current.id);
+  }, [state]);
+
+  const breadcrumbsLinks = useMemo(() => {
+    return currentPaths.map((path) => {
+      // 当該ページの場合はリンクを表示しない
+      if (path.id === state.current?.id) {
+        return { title: path.id };
+      }
+      return { title: path.id, url: path.path };
+    });
+  }, [currentPaths]);
+
   return {
     treeNodes: useMemo(
       () => serializeTreeAsLocations(state.tree),
       [state.tree]
     ),
-    currentPaths: useMemo(() => {
-      if (!state.current) {
-        return [];
-      }
-      return extractLocationPathsFromTree(state.tree, state.current.id);
-    }, [state]),
+    currentPaths,
+    breadcrumbsLinks,
   };
 };
 

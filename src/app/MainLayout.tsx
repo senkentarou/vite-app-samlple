@@ -13,6 +13,7 @@ import styled from "styled-components";
 
 import { Home } from "@screens/Home";
 import { About } from "@screens/About";
+import { Me } from "@screens/Me";
 import { NotFound } from "@screens/NotFound";
 import { useLocationContext } from "@common/location";
 
@@ -29,6 +30,7 @@ const ScreenRoutes = () => {
   return (
     <Routes>
       <Route path="/about" element={<About />} />
+      <Route path="/about/me" element={<Me />} />
       <Route path="/" element={<Home />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -36,7 +38,7 @@ const ScreenRoutes = () => {
 };
 
 export const MainLayout = () => {
-  const { state } = useLocationContext();
+  const { state, computed } = useLocationContext();
 
   const links = useMemo(() => {
     return [
@@ -44,16 +46,16 @@ export const MainLayout = () => {
         title: "Home",
         url: "/",
         IconComponent: MdHome,
-        current: state.current?.path === "/",
+        current: state.current?.path === "/", // HOMEからドリルダウンするページはない。
       },
       {
         title: "About",
         url: "/about",
         IconComponent: MdRouter,
-        current: state.current?.path === "/about",
+        current: computed.currentPaths.some((p) => p.path === "/about"),
       },
     ];
-  }, [state]);
+  }, [computed]);
 
   return (
     <>

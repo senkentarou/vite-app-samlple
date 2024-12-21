@@ -1,8 +1,14 @@
+import { CardNavigation, ContentsBase } from "@freee_jp/vibes";
+import { MdPerson } from "react-icons/md";
+
 export const About = () => {
+  const navigationContents = [
+    { title: "Me", url: "/about/me", IconComponent: MdPerson },
+  ];
+
   return (
-    <div>
-      <h1>About</h1>
-      <p>This is the about page.</p>
-    </div>
+    <ContentsBase>
+      <CardNavigation navigationContents={navigationContents} />
+    </ContentsBase>
   );
 };
