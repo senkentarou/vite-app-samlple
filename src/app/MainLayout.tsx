@@ -14,7 +14,7 @@ import styled from "styled-components";
 import { Home } from "@screens/Home";
 import { About } from "@screens/About";
 import { NotFound } from "@screens/NotFound";
-import { useLocationContext } from "@common/useLocationContext";
+import { useLocationContext } from "@common/location";
 
 // With respect to https://vibes.freee.co.jp/?path=/docs/lv1-bases-container--docs
 const StyledMain = styled.main`
@@ -79,7 +79,7 @@ export const MainLayout = () => {
         disableAppStoreBadge
         disableGooglePlayBadge
         links={[]}
-        copyright="© Copyright 2024-2025 senkentarou"
+        copyright="© 2024 senkentarou"
       />
     </>
   );

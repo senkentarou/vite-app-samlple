@@ -1,4 +1,3 @@
-import path from "path-browserify";
 import {
   createContext,
   useContext,
@@ -9,14 +8,13 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { redirect, matchPath, useLocation } from "react-router-dom";
-
-// TODO: モデルを別ファイルに切り出す
-type Location = {
-  id: string;
-  path: string;
-  nodes?: Location[]; // nodesを持たない場合は終端(leaf)と見做す
-};
+import { redirect, useLocation } from "react-router-dom";
+import { Location } from "./model";
+import {
+  detectLocation,
+  extractLocationPathsFromTree,
+  serializeTreeAsLocations,
+} from "./utils";
 
 type State = {
   tree: Location;
@@ -37,24 +35,6 @@ type Context = { state: State; computed: Computed; action: Action };
 
 type Mutation = { type: "SET_LOCATION"; payload: Location | null };
 
-// TODO: Treeは別ファイルで管理。
-const initialTree: Location = {
-  id: "HOME",
-  path: "/",
-  nodes: [
-    {
-      id: "ABOUT",
-      path: "about",
-      nodes: [
-        {
-          id: "ABOUT.ME",
-          path: "me",
-        },
-      ],
-    },
-  ],
-};
-
 const reducer: Reducer<State, Mutation> = (state, mutation) => {
   switch (mutation.type) {
     case "SET_LOCATION":
@@ -62,43 +42,6 @@ const reducer: Reducer<State, Mutation> = (state, mutation) => {
     default:
       return state;
   }
-};
-
-// TODO: 関数達を別ファイルに切り出す
-
-// 対象ツリー上の子孫を走査して絶対パスに変換した1次元リストを返す
-const serializeTreeAsLocations = (
-  tree: Location,
-  parentPath?: string
-): Location[] => {
-  const absolutePath = path.join(parentPath || "", tree.path);
-  const branch = tree?.nodes || [];
-
-  return branch.reduce(
-    (acc, node) => acc.concat(serializeTreeAsLocations(node, absolutePath)),
-    [{ ...tree, path: absolutePath }]
-  );
-};
-
-// 対象ツリー上の子孫を走査して、指定したノードを含むパスのリストを返す
-const extractLocationPathsFromTree = (
-  tree: Location,
-  nodeId: Location["id"]
-): Location[] => {
-  return serializeTreeAsLocations(tree).filter((l) => hasAncestor(l, nodeId));
-};
-
-const hasAncestor = (site: Location, nodeId: Location["id"]): boolean => {
-  // 自分自身は子孫と見做す
-  if (site.id === nodeId) {
-    return true;
-  }
-  const branch = site?.nodes || [];
-  return branch.some((node) => hasAncestor(node, nodeId));
-};
-
-const detectLocation = (path: string, nodes: Location[]) => {
-  return nodes.find((node) => matchPath(path, node.path)) || null;
 };
 
 const useComputed = (state: State) => {
@@ -154,11 +97,13 @@ export const useLocationContext = () => {
 
 export const LocationContextProvider = ({
   children,
+  tree,
 }: {
   children?: ReactNode;
+  tree?: Location;
 }) => {
   const [state, dispatch] = useReducer(reducer, {
-    tree: initialTree, // TODO: Providerのpropsで渡すようにする
+    tree: tree || { id: "HOME", path: "/" },
     current: null,
   });
   const computed = useComputed(state);
