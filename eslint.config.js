@@ -87,6 +87,7 @@ export default tseslint.config(
     // eslint-plugin-import の設定
     plugins: { import: fixupPluginRules(importPlugin) },
     rules: {
+      "import/no-duplicates": "warn", // import元の重複を許可しない
       "import/order": [
         // import の並び順を設定
         "warn",
