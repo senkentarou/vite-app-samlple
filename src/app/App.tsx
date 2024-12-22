@@ -8,7 +8,7 @@ import { AppRoutes } from "./routes";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <VibesProvider fixedLayout={false} portalParent={document.body} lang="ja">
+    <VibesProvider fixedLayout={false} lang="ja" portalParent={document.body}>
       <AppRoutes />
     </VibesProvider>
   </StrictMode>

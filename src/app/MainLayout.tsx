@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { Route, Routes } from "react-router-dom";
-import { MdHome, MdRouter } from "react-icons/md";
-import { FaGithub } from "react-icons/fa";
+
+import { useLocationContext } from "@common/location";
 import {
   Footer,
   GlobalNavi,
@@ -9,13 +8,14 @@ import {
   IconOnlyButton,
   StatusIcon,
 } from "@freee_jp/vibes";
-import styled from "styled-components";
-
-import { Home } from "@screens/Home";
 import { About } from "@screens/About";
+import { Home } from "@screens/Home";
 import { Me } from "@screens/Me";
 import { NotFound } from "@screens/NotFound";
-import { useLocationContext } from "@common/location";
+import { FaGithub } from "react-icons/fa";
+import { MdHome, MdRouter } from "react-icons/md";
+import { Route, Routes } from "react-router-dom";
+import styled from "styled-components";
 
 // With respect to https://vibes.freee.co.jp/?path=/docs/lv1-bases-container--docs
 const StyledMain = styled.main`
@@ -29,10 +29,10 @@ const StyledMain = styled.main`
 const ScreenRoutes = () => {
   return (
     <Routes>
-      <Route path="/about" element={<About />} />
-      <Route path="/about/me" element={<Me />} />
-      <Route path="/" element={<Home />} />
-      <Route path="*" element={<NotFound />} />
+      <Route element={<About />} path="/about" />
+      <Route element={<Me />} path="/about/me" />
+      <Route element={<Home />} path="/" />
+      <Route element={<NotFound />} path="*" />
     </Routes>
   );
 };
@@ -46,7 +46,7 @@ export const MainLayout = () => {
         title: "Home",
         url: "/",
         IconComponent: MdHome,
-        current: state.current?.path === "/", // HOMEからドリルダウンするページはない。
+        current: state.current?.path === "/", // HOMEからドリルダウンするページを作らない。
       },
       {
         title: "About",
@@ -55,19 +55,19 @@ export const MainLayout = () => {
         current: computed.currentPaths.some((p) => p.path === "/about"),
       },
     ];
-  }, [computed]);
+  }, [state, computed]);
 
   return (
     <>
       <Header
-        logo={<StatusIcon type="success">senkentarou's page</StatusIcon>}
+        logo={<StatusIcon type="success">senkentarou page</StatusIcon>}
         logoUrl="/"
         sectionNode={
           <IconOnlyButton
             IconComponent={FaGithub}
-            label="github"
             appearance="tertiary"
             href="https://github.com/senkentarou"
+            label="github"
             target="_blank"
           />
         }
@@ -77,11 +77,11 @@ export const MainLayout = () => {
         <ScreenRoutes />
       </StyledMain>
       <Footer
-        width="wide"
+        copyright="© 2024 senkentarou"
         disableAppStoreBadge
         disableGooglePlayBadge
         links={[]}
-        copyright="© 2024 senkentarou"
+        width="wide"
       />
     </>
   );

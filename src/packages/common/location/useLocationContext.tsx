@@ -8,7 +8,9 @@ import {
   useEffect,
   useMemo,
 } from "react";
+
 import { redirect, useLocation } from "react-router-dom";
+
 import { Location } from "./model";
 import {
   detectLocation,
@@ -61,7 +63,7 @@ const useComputed = (state: State) => {
       }
       return { title: path.id, url: path.path };
     });
-  }, [currentPaths]);
+  }, [state, currentPaths]);
 
   return {
     treeNodes: useMemo(
@@ -124,6 +126,7 @@ export const LocationContextProvider = ({
   const action = useAction({ state, computed, dispatch });
   const { pathname } = useLocation();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => action.updateCurrent(pathname), [pathname]);
 
   return (
