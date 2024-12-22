@@ -2,9 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/features/components/*"],
-      "@screens/*": ["src/features/screens/*"],
-      "@common/*": ["src/packages/common/*"],
+      "@features/*": ["src/features/*"],
+      "@contexts/*": ["src/packages/@common/contexts/*"],
       "@config/*": ["src/config/*"]
     }
   }

@@ -11,7 +11,7 @@ import {
 
 import { redirect, useLocation } from "react-router-dom";
 
-import { Location } from "./model";
+import { Location, GNAVI_THEME } from "./model";
 import {
   detectLocation,
   extractLocationPathsFromTree,
@@ -26,6 +26,7 @@ type State = {
 type Computed = {
   treeNodes: Location[]; // ツリー上の全てのノードを走査して絶対パスに変換した1次元リスト
   currentPaths: Location[]; // 現在のページを構成するパスのリスト
+  showBreadcrumbs: boolean;
   breadcrumbsLinks: { title: string; url?: string }[];
 };
 
@@ -65,12 +66,18 @@ const useComputed = (state: State) => {
     });
   }, [state, currentPaths]);
 
+  const showBreadcrumbs = useMemo(() => {
+    // グロナビの場合はすぐアクセスできるためパンくずリストを表示しない
+    return state.current?.theme !== GNAVI_THEME;
+  }, [state]);
+
   return {
     treeNodes: useMemo(
       () => serializeTreeAsLocations(state.tree),
       [state.tree]
     ),
     currentPaths,
+    showBreadcrumbs,
     breadcrumbsLinks,
   };
 };

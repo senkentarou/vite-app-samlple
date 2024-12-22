@@ -14,9 +14,9 @@ export const About = () => {
       <GridWrapper>
         <GridBlock size="half">
           <ListCard
+            thumbnail={<MaterialIcon IconComponent={MdPerson} />}
             title="Me"
             url="/about/me"
-            thumbnail={<MaterialIcon IconComponent={MdPerson} />}
           >
             <Paragraph>aaaaaaaaaaaaaaaaaaaaa</Paragraph>
           </ListCard>
