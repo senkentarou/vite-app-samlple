@@ -8,7 +8,7 @@ import {
 } from "@freee_jp/vibes";
 import { MdPerson } from "react-icons/md";
 
-export const About = () => {
+export const AboutContainer = () => {
   return (
     <ContentsBase>
       <GridWrapper>

@@ -1,21 +1,19 @@
 import { sitetree } from "@config/sitetree";
 import { LocationContextProvider } from "@contexts/location";
-// TODO: screensをDOMAIN配下に分ける
-import { About } from "@features/screens/About";
-import { Home } from "@features/screens/Home";
-import { Me } from "@features/screens/Me";
-import { NotFound } from "@features/screens/NotFound";
+import { AboutContainer } from "@features/about";
+import { HomeContainer } from "@features/home";
+import { MeContainer } from "@features/me";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import { NotFound } from "./components/NotFound";
 import { Main } from "./Main";
 
 const FeatureRoutes = () => {
-  // TODO: featureのroutesから追加する
   return (
     <Routes>
-      <Route element={<About />} path="/about" />
-      <Route element={<Me />} path="/about/me" />
-      <Route element={<Home />} path="/" />
+      <Route element={<AboutContainer />} path="/about" />
+      <Route element={<MeContainer />} path="/about/me" />
+      <Route element={<HomeContainer />} path="/" />
       <Route element={<NotFound />} path="*" />
     </Routes>
   );
